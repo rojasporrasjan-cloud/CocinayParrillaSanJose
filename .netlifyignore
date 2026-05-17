@@ -1,0 +1,8 @@
+# Carpetas de trabajo — no se necesitan en producción
+imagenes claude/
+Menu fisico/
+
+# Scripts de desarrollo
+build_menu.ps1
+generate_icons.ps1
+package.json
