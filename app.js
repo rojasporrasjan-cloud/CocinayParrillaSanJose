@@ -684,6 +684,60 @@ function updateLightboxImage() {
   document.getElementById('lightbox-caption').textContent = item.caption || '';
 }
 
+/* ── PWA INSTALL PROMPT ─────────────────────── */
+(function() {
+  let deferredPrompt = null;
+  const DISMISS_KEY  = 'pwa_banner_dismissed';
+
+  function showBanner() {
+    const banner = document.getElementById('pwa-banner');
+    if (!banner) return;
+    banner.style.display = 'flex';
+    requestAnimationFrame(() => requestAnimationFrame(() => banner.classList.add('show')));
+  }
+
+  function hideBanner(permanent) {
+    const banner = document.getElementById('pwa-banner');
+    if (!banner) return;
+    banner.classList.remove('show');
+    setTimeout(() => { banner.style.display = 'none'; }, 350);
+    if (permanent) localStorage.setItem(DISMISS_KEY, '1');
+  }
+
+  // Captura el evento del navegador (Android Chrome)
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    if (localStorage.getItem(DISMISS_KEY)) return;
+    setTimeout(showBanner, 3000);
+  });
+
+  // Botón instalar
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('#pwa-install-btn')) return;
+    hideBanner(false);
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((result) => {
+        if (result.outcome === 'accepted') localStorage.setItem(DISMISS_KEY, '1');
+        deferredPrompt = null;
+      });
+    }
+  });
+
+  // Botón cerrar
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('#pwa-dismiss-btn')) return;
+    hideBanner(true);
+  });
+
+  // Si ya está instalada, no mostrar
+  window.addEventListener('appinstalled', () => {
+    localStorage.setItem(DISMISS_KEY, '1');
+    hideBanner(false);
+  });
+})();
+
 // Swipe support for lightbox on mobile
 (function() {
   let startX = 0;
