@@ -1,0 +1,11 @@
+{
+  "name": "restaurante-menu-digital",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "npx serve ."
+  },
+  "devDependencies": {
+    "serve": "^14.2.0"
+  }
+}

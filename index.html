@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title id="page-title">Cocina y Parrilla San José — Menú Digital</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;700&family=Montserrat:wght@900&display=swap" rel="stylesheet">
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css?v=1.1">
+  
+  <!-- Favicon -->
+  <link rel="icon" href="favicon.png" type="image/png">
+
+  <!-- Open Graph / Redes Sociales (WhatsApp, Facebook, etc.) -->
+  <meta property="og:title" content="Cocina y Parrilla San José — Menú Digital">
+  <meta property="og:description" content="Descubre nuestro menú digital. Auténtica cocina tradicional y parrilla.">
+  <meta property="og:image" content="og-image.jpeg">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#FFCC00">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="San José Menú">
+  <link rel="apple-touch-icon" href="icon-192.png">
+</head>
+<body>
+
+  <!-- TOAST NOTIFICATIONS -->
+  <div id="toast" class="toast"></div>
+
+  <!-- MESA BANNER (Show when ?mesa=X) -->
+  <div id="mesa-banner" class="mesa-banner"></div>
+
+  <!-- HERO SECTION -->
+  <header class="hero">
+    <div class="hero-bg">
+      <img src="casado_premium_1775836869973.png" alt="Hero Left" class="hero-img-l">
+      <img src="burger_fries_premium_1775836885209.png" alt="Hero Right" class="hero-img-r">
+    </div>
+    <div class="hero-content">
+      <!-- Logo / nombre — controlado por config.js → RESTAURANT.logo -->
+      <div class="hero-logo-wrap" id="hero-logo-wrap">
+        <div class="hero-logo-text" id="hero-logo-text">
+          <div class="hero-eyebrow">Parrilla &amp; Sabor</div>
+          <h1 class="hero-name" id="hero-name">SAN JOSÉ</h1>
+          <div class="hero-tagline" id="hero-tagline">COCINA TRADICIONAL &amp; PARRILLA</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- SEARCH BAR -->
+  <div class="search-wrap">
+    <div class="search-inner">
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input type="text" id="menu-search" placeholder="Busca tu plato favorito...">
+      <button id="search-clear" class="search-clear">✕</button>
+    </div>
+  </div>
+
+  <!-- CATEGORY NAVIGATION -->
+  <nav class="cat-nav">
+    <div class="cat-nav-inner">
+      <button class="cat-pill active" data-target="gaseosas">Gaseosas</button>
+      <button class="cat-pill" data-target="batidos">Batidos</button>
+      <button class="cat-pill" data-target="maquina">Máquina</button>
+      <button class="cat-pill" data-target="tradicionales">Tradicionales</button>
+      <button class="cat-pill" data-target="pollo">Pollo</button>
+      <button class="cat-pill" data-target="compartir">Compartir</button>
+      <button class="cat-pill" data-target="desayunos">Desayunos</button>
+      <button class="cat-pill" data-target="gallo-pinto">Gallo Pinto</button>
+      <button class="cat-pill" data-target="platos">Platos Fuertes</button>
+      <button class="cat-pill" data-target="casados">Casados</button>
+      <button class="cat-pill gallery-pill" data-target="galeria" id="gallery-nav-pill" style="display:none">📷 Galería</button>
+    </div>
+  </nav>
+
+  <!-- MAIN MENU -->
+  <main class="menu-main">
+
+    <!-- BEBIDAS GASEOSAS -->
+    <section id="gaseosas" class="menu-section">
+      <div class="section-header"><h2 class="section-title">Bebidas Gaseosas</h2><div class="section-line"></div></div>
+      <div class="cards-grid">
+
+        <div class="food-card reveal" data-name="Gaseosa Vidrio">
+          <div class="card-img"><img src="soda_corner.png" alt="Gaseosa Vidrio"></div>
+          <div class="card-body"><div><h3 class="card-name">Gaseosa Vidrio</h3><p class="card-desc">Presentación en botella de vidrio.</p></div>
+          <div class="card-footer"><span class="card-price">₡1,000</span><button class="add-btn" onclick="addToCart('Gaseosa Vidrio', 1000, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+        <div class="food-card reveal" data-name="Frescos Desechables">
+          <div class="card-img"><img src="drinks_premium_chalk.png" alt="Frescos Desechables"></div>
+          <div class="card-body"><div><h3 class="card-name">Frescos Desechables</h3><p class="card-desc">Bebidas refrescantes en envase desechable.</p></div>
+          <div class="card-footer"><span class="card-price">₡1,200</span><button class="add-btn" onclick="addToCart('Frescos Desechables', 1200, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+        <div class="food-card reveal" data-name="Gaseosa 1.5L">
+          <div class="card-img"><img src="soda_corner.png" alt="Gaseosa 1.5L"></div>
+          <div class="card-body"><div><h3 class="card-name">Gaseosa 1.5L</h3><p class="card-desc">Botella familiar para la mesa.</p></div>
+          <div class="card-footer"><span class="card-price">₡2,000</span><button class="add-btn" onclick="addToCart('Gaseosa 1.5L', 2000, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+        <div class="food-card reveal" data-name="Gaseosa 2.5L">
+          <div class="card-img"><img src="soda_corner.png" alt="Gaseosa 2.5L"></div>
+          <div class="card-body"><div><h3 class="card-name">Gaseosa 2.5L</h3><p class="card-desc">Botella grande para grupo.</p></div>
+          <div class="card-footer"><span class="card-price">₡2,500</span><button class="add-btn" onclick="addToCart('Gaseosa 2.5L', 2500, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+        <div class="food-card reveal" data-name="Agua">
+          <div class="card-img"><img src="drinks_premium_chalk.png" alt="Agua"></div>
+          <div class="card-body"><div><h3 class="card-name">Agua</h3><p class="card-desc">Agua purificada en botella.</p></div>
+          <div class="card-footer"><span class="card-price">₡1,000</span><button class="add-btn" onclick="addToCart('Agua', 1000, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+        <div class="food-card reveal" data-name="Aloe Vera">
+          <div class="card-img"><img src="drinks_premium_chalk.png" alt="Aloe Vera"></div>
+          <div class="card-body"><div><h3 class="card-name">Aloe Vera</h3><p class="card-desc">Bebida natural de aloe vera.</p></div>
+          <div class="card-footer"><span class="card-price">₡1,400</span><button class="add-btn" onclick="addToCart('Aloe Vera', 1400, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+        <div class="food-card reveal" data-name="Powerade">
+          <div class="card-img"><img src="drinks_premium_chalk.png" alt="Powerade"></div>
+          <div class="card-body"><div><h3 class="card-name">Powerade</h3><p class="card-desc">Bebida hidratante deportiva.</p></div>
+          <div class="card-footer"><span class="card-price">₡1,400</span><button class="add-btn" onclick="addToCart('Powerade', 1400, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+        <div class="food-card reveal" data-name="Jugo Lata">
+          <div class="card-img"><img src="drinks_premium_chalk.png" alt="Jugo Lata"></div>
+          <div class="card-body"><div><h3 class="card-name">Jugo Lata</h3><p class="card-desc">Jugo de fruta en lata.</p></div>
+          <div class="card-footer"><span class="card-price">₡600</span><button class="add-btn" onclick="addToCart('Jugo Lata', 600, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- BATIDOS NATURALES -->
+    <section id="batidos" class="menu-section">
+      <div class="section-header"><h2 class="section-title">Batidos Naturales</h2><div class="section-line"></div></div>
+      <p class="section-note">Sabores: Papaya · Piña · Frutas · Sabor semanal</p>
+      <div class="cards-grid">
+
+        <div class="food-card reveal" data-name="Batido de Agua" data-select="Sabor*:Papaya|Piña|Frutas|Sabor semanal">
+          <div class="card-img"><img src="drinks_premium_chalk.png" alt="Batido de Agua"></div>
+          <div class="card-body"><div><h3 class="card-name">Batido de Agua</h3><p class="card-desc">Batido natural preparado con agua.</p></div>
+          <div class="card-footer"><span class="card-price">₡1,200</span><button class="add-btn" onclick="addToCart('Batido de Agua', 1200, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+        <div class="food-card reveal" data-name="Batido de Leche" data-select="Sabor*:Papaya|Piña|Frutas|Sabor semanal">
+          <div class="card-img"><img src="drinks_premium_chalk.png" alt="Batido de Leche"></div><div class="card-body"><div><h3 class="card-name">Batido de Leche<span class="badge popular">Popular</span></h3><p class="card-desc">Batido cremoso con leche fresca.</p></div>
+          <div class="card-footer"><span class="card-price">₡1,700</span><button class="add-btn" onclick="addToCart('Batido de Leche', 1700, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- BEBIDAS DE MÁQUINA -->
+    <section id="maquina" class="menu-section">
+      <div class="section-header"><h2 class="section-title">Bebidas de Máquina</h2><div class="section-line"></div></div>
+      <div class="cards-grid">
+
+        <div class="food-card reveal" data-name="Café Negro">
+          <div class="card-img"><img src="drinks_premium_chalk.png" alt="Café Negro"></div>
+          <div class="card-body"><div><h3 class="card-name">Café Negro</h3><p class="card-desc">Café espresso puro de máquina.</p></div>
+          <div class="card-footer"><span class="card-price">₡1,500</span><button class="add-btn" onclick="addToCart('Café Negro', 1500, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+        <div class="food-card reveal" data-name="Café con Leche">
+          <div class="card-img"><img src="drinks_premium_chalk.png" alt="Café con Leche"></div>
+          <div class="card-body"><div><h3 class="card-name">Café con Leche</h3><p class="card-desc">Espresso suavizado con leche.</p></div>
+          <div class="card-footer"><span class="card-price">₡1,500</span><button class="add-btn" onclick="addToCart('Café con Leche', 1500, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+        <div class="food-card reveal" data-name="Café Mocca">
+          <div class="card-img"><img src="drinks_premium_chalk.png" alt="Café Mocca"></div>
+          <div class="card-body"><div><h3 class="card-name">Café Mocca</h3><p class="card-desc">Espresso con toque de chocolate.</p></div>
+          <div class="card-footer"><span class="card-price">₡1,500</span><button class="add-btn" onclick="addToCart('Café Mocca', 1500, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+        <div class="food-card reveal" data-name="Capuchino Vainilla">
+          <div class="card-img"><img src="drinks_premium_chalk.png" alt="Capuchino Vainilla"></div><div class="card-body"><div><h3 class="card-name">Capuchino Vainilla<span class="badge special">Especial</span></h3><p class="card-desc">Capuchino con sirope de vainilla.</p></div>
+          <div class="card-footer"><span class="card-price">₡1,500</span><button class="add-btn" onclick="addToCart('Capuchino Vainilla', 1500, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+        <div class="food-card reveal" data-name="Chocolate">
+          <div class="card-img"><img src="drinks_premium_chalk.png" alt="Chocolate"></div>
+          <div class="card-body"><div><h3 class="card-name">Chocolate</h3><p class="card-desc">Chocolate caliente cremoso.</p></div>
+          <div class="card-footer"><span class="card-price">₡1,800</span><button class="add-btn" onclick="addToCart('Chocolate', 1800, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+        <div class="food-card reveal" data-name="Chocolate Gourmet">
+          <div class="card-img"><img src="drinks_premium_chalk.png" alt="Chocolate Gourmet"></div>
+          <div class="card-body"><div><h3 class="card-name">Chocolate Gourmet</h3><p class="card-desc">Chocolate premium con cacao de alta calidad.</p></div>
+          <div class="card-footer"><span class="card-price">₡1,800</span><button class="add-btn" onclick="addToCart('Chocolate Gourmet', 1800, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+        <div class="food-card reveal" data-name="Chocochino">
+          <div class="card-img"><img src="drinks_premium_chalk.png" alt="Chocochino"></div>
+          <div class="card-body"><div><h3 class="card-name">Chocochino</h3><p class="card-desc">Mezcla de chocolate y capuchino.</p></div>
+          <div class="card-footer"><span class="card-price">₡1,800</span><button class="add-btn" onclick="addToCart('Chocochino', 1800, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TRADICIONALES -->
+    <section id="tradicionales" class="menu-section">
+      <div class="section-header"><h2 class="section-title">Tradicionales</h2><div class="section-line"></div></div>
+      <div class="cards-grid">
+
+        <div class="food-card reveal" data-name="Café Tradicional" data-extras="Con leche:200">
+          <div class="card-img"><img src="drinks_premium_chalk.png" alt="Café"></div>
+          <div class="card-body"><div><h3 class="card-name">Café</h3><p class="card-desc">Café costarricense servido en taza. Añade leche por +₡200.</p></div>
+          <div class="card-footer"><span class="card-price">₡1,000</span><button class="add-btn" onclick="addToCart('Café', 1000, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+        <div class="food-card reveal" data-name="Chocolate Tradicional">
+          <div class="card-img"><img src="drinks_premium_chalk.png" alt="Chocolate Tradicional"></div>
+          <div class="card-body"><div><h3 class="card-name">Chocolate</h3><p class="card-desc">Chocolate caliente tradicional casero.</p></div>
+          <div class="card-footer"><span class="card-price">₡1,000</span><button class="add-btn" onclick="addToCart('Chocolate Tradicional', 1000, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+        <div class="food-card reveal" data-name="Agua Dulce">
+          <div class="card-img"><img src="drinks_premium_chalk.png" alt="Agua Dulce"></div>
+          <div class="card-body"><div><h3 class="card-name">Agua Dulce</h3><p class="card-desc">Bebida típica costarricense de tapa de dulce.</p></div>
+          <div class="card-footer"><span class="card-price">₡800</span><button class="add-btn" onclick="addToCart('Agua Dulce', 800, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+        <div class="food-card reveal" data-name="Té">
+          <div class="card-img"><img src="drinks_premium_chalk.png" alt="Té"></div>
+          <div class="card-body"><div><h3 class="card-name">Té</h3><p class="card-desc">Té caliente a elección.</p></div>
+          <div class="card-footer"><span class="card-price">₡800</span><button class="add-btn" onclick="addToCart('Té', 800, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- POLLO -->
+    <section id="pollo" class="menu-section">
+      <div class="section-header"><h2 class="section-title">Pollo</h2><div class="section-line"></div></div>
+      <div class="cards-grid">
+
+        <div class="food-card reveal" data-name="Cuarto / Muslo" data-extras="Con papas:500">
+          <div class="card-img"><img src="fried_chicken_premium_chalk.png" alt="Cuarto Muslo"></div>
+          <div class="card-body"><div><h3 class="card-name">Cuarto / Muslo</h3><p class="card-desc">Pieza de pollo. Con papas +₡500.</p></div>
+          <div class="card-footer"><span class="card-price">₡2,000</span><button class="add-btn" onclick="addToCart('Cuarto/Muslo', 2000, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+        <div class="food-card reveal" data-name="Pechuga / Ala" data-extras="Con papas:500">
+          <div class="card-img"><img src="fried_chicken_premium_chalk.png" alt="Pechuga Ala"></div>
+          <div class="card-body"><div><h3 class="card-name">Pechuga / Ala</h3><p class="card-desc">Pieza de pollo jugosa. Con papas +₡500.</p></div>
+          <div class="card-footer"><span class="card-price">₡2,500</span><button class="add-btn" onclick="addToCart('Pechuga/Ala', 2500, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+        <div class="food-card reveal" data-name="Fajitas de Pollo" data-select="Estilo*:Empanizadas|A la plancha">
+          <div class="card-img"><img src="fried_chicken_premium_chalk.png" alt="Fajitas"></div><div class="card-body"><div><h3 class="card-name">Fajitas de Pollo<span class="badge special">Elige estilo</span></h3><p class="card-desc">Tiras de pollo. Empanizadas o a la plancha.</p></div>
+          <div class="card-footer"><span class="card-price">₡3,500</span><button class="add-btn" onclick="addToCart('Fajitas de Pollo', 3500, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+        <div class="food-card reveal" data-name="Alitas" data-select="Presentación*:Bañadas|Acompañadas;Salsa*:Mostaza miel|Buffalo|BBQ">
+          <div class="card-img"><img src="hot_wings_bbq_1775836900230.png" alt="Alitas"></div><div class="card-body"><div><h3 class="card-name">Alitas<span class="badge popular">Popular</span></h3><p class="card-desc">Alitas crujientes. Bañadas o acompañadas. Elige salsa.</p></div>
+          <div class="card-footer"><span class="card-price">₡3,500</span><button class="add-btn" onclick="addToCart('Alitas', 3500, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- PARA COMPARTIR -->
+    <section id="compartir" class="menu-section">
+      <div class="section-header"><h2 class="section-title">Para Compartir</h2><div class="section-line"></div></div>
+      <div class="cards-grid">
+
+        <div class="food-card reveal" data-name="Surtida para 2 Carne"
+             data-extras="Costilla:0,Alitas:0,Fajitas:0,Dedos de queso:0,Papas:0,Tortillas:0">
+          <div class="card-img"><img src="surtida_hd.png" alt="Surtida para 2 Carne"></div><div class="card-body"><div><h3 class="card-name">Surtida de Carne — Para 2<span class="badge popular">Para 2</span></h3><p class="card-desc">Selecciona los items que quieres en tu surtida.</p></div>
+          <div class="card-footer"><span class="card-price">₡9,000</span><button class="add-btn" onclick="addToCart('Surtida de Carne para 2', 9000, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+        <div class="food-card reveal" data-name="Surtida Especial para 2"
+             data-select="Combo*:2 Hamburguesas pequeñas|2 Tacos pequeños|Salchipapas">
+          <div class="card-img"><img src="surtida_hd.png" alt="Surtida Especial"></div><div class="card-body"><div><h3 class="card-name">Surtida Especial — Para 2<span class="badge special">Especial</span></h3><p class="card-desc">Elige tu combo: hamburguesas, tacos o salchipapas.</p></div>
+          <div class="card-footer"><span class="card-price">₡7,000</span><button class="add-btn" onclick="addToCart('Surtida Especial para 2', 7000, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+        <div class="food-card reveal" data-name="Surtida para 4 Carne"
+             data-extras="Costilla:0,Alitas:0,Fajitas:0,Dedos de queso:0,Papas:0,Tortillas:0">
+          <div class="card-img"><img src="surtida_hd.png" alt="Surtida para 4 Carne"></div><div class="card-body"><div><h3 class="card-name">Surtida de Carne — Para 4<span class="badge popular">Para 4</span></h3><p class="card-desc">Selecciona los items que quieres en tu surtida.</p></div>
+          <div class="card-footer"><span class="card-price">₡15,000</span><button class="add-btn" onclick="addToCart('Surtida de Carne para 4', 15000, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- DESAYUNOS -->
+    <section id="desayunos" class="menu-section">
+      <div class="section-header"><h2 class="section-title">Desayunos</h2><div class="section-line"></div></div>
+      <div class="cards-grid">
+
+        <div class="food-card reveal" data-name="Sándwich" data-select="Tipo*:Jamón y queso|Carne|Pollo">
+          <div class="card-img"><img src="burger_fries_premium_1775836885209.png" alt="Sándwich"></div>
+          <div class="card-body"><div><h3 class="card-name">Sándwich</h3><p class="card-desc">Sándwich para el desayuno. Elige el relleno.</p></div>
+          <div class="card-footer"><span class="card-price">₡2,500</span><button class="add-btn" onclick="addToCart('Sándwich', 2500, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+        <div class="food-card reveal" data-name="Empanadas" data-select="Relleno*:Frijol|Queso|Carne|Pollo">
+          <div class="card-img"><img src="empanadas_hd.png" alt="Empanadas"></div>
+          <div class="card-body"><div><h3 class="card-name">Empanadas</h3><p class="card-desc">Empanaditas caseras fritas. Elige el relleno.</p></div>
+          <div class="card-footer"><span class="card-price">₡1,200</span><button class="add-btn" onclick="addToCart('Empanadas', 1200, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+        <div class="food-card reveal" data-name="Empanada Arreglada" 
+             data-select="Relleno*:Frijol|Queso|Carne|Pollo" 
+             data-extras="Con papas:700">
+          <div class="card-img"><img src="empanadas_hd.png" alt="Empanada Arreglada"></div>
+          <div class="card-body"><div><h3 class="card-name">Empanada Arreglada<span class="badge special">Con todo</span></h3><p class="card-desc">Con natilla, salsa y vegetales. ₡1,800 con ensalada o ₡2,500 con papas.</p></div>
+          <div class="card-footer"><span class="card-price">₡1,800</span><button class="add-btn" onclick="addToCart('Empanada Arreglada', 1800, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- GALLO PINTO -->
+    <section id="gallo-pinto" class="menu-section">
+      <div class="section-header"><h2 class="section-title">Gallo Pinto</h2><div class="section-line"></div></div>
+      <p class="section-note">Elige tu proteína y adicional. Adicional extra por ₡500.</p>
+      <div class="cards-grid">
+
+        <div class="food-card reveal" data-name="Gallo Pinto"
+             data-select="Proteína*:Carne en salsa|Chuleta|Bistec|Huevo ranchero;Adicional*:Huevo|Natilla|Queso|Tocineta|Salchichón"
+             data-extras="Huevo (adicional extra):500,Natilla (adicional extra):500,Queso (adicional extra):500,Tocineta (adicional extra):500,Salchichón (adicional extra):500">
+          <div class="card-img"><img src="casado_premium_1775836869973.png" alt="Gallo Pinto"></div><div class="card-body"><div><h3 class="card-name">Gallo Pinto<span class="badge popular">Popular</span></h3><p class="card-desc">Arroz y frijoles con proteína y adicional a elegir.</p></div>
+          <div class="card-footer"><span class="card-price">₡2,500</span><button class="add-btn" onclick="addToCart('Gallo Pinto', 2500, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- PLATOS FUERTES -->
+    <section id="platos" class="menu-section">
+      <div class="section-header"><h2 class="section-title">Platos Fuertes</h2><div class="section-line"></div></div>
+      <div class="cards-grid">
+
+        <div class="food-card reveal" data-name="Arroz con Camarones">
+          <div class="card-img"><img src="shrimp_rice_hd.png" alt="Arroz con Camarones"></div><div class="card-body"><div><h3 class="card-name">Arroz con Camarones<span class="badge popular">Popular</span></h3><p class="card-desc">Arroz cargado de camarones y especias.</p></div>
+          <div class="card-footer"><span class="card-price">₡4,500</span><button class="add-btn" onclick="addToCart('Arroz con Camarones', 4500, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+        <div class="food-card reveal" data-name="Arroz con Cerdo">
+          <div class="card-img"><img src="seafood_rice_premium_1776174052478.png" alt="Arroz con Cerdo"></div>
+          <div class="card-body"><div><h3 class="card-name">Arroz con Cerdo</h3><p class="card-desc">Arroz con trozos de cerdo jugoso y sazón de la casa.</p></div>
+          <div class="card-footer"><span class="card-price">₡4,000</span><button class="add-btn" onclick="addToCart('Arroz con Cerdo', 4000, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+        <div class="food-card reveal" data-name="Burrito">
+          <div class="card-img"><img src="tacos_premium_chalk.png" alt="Burrito"></div>
+          <div class="card-body"><div><h3 class="card-name">Burrito</h3><p class="card-desc">Burrito relleno con carne, arroz y frijoles.</p></div>
+          <div class="card-footer"><span class="card-price">₡3,500</span><button class="add-btn" onclick="addToCart('Burrito', 3500, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+        <div class="food-card reveal" data-name="Burrito Mixto">
+          <div class="card-img"><img src="tacos_premium_chalk.png" alt="Burrito Mixto"></div><div class="card-body"><div><h3 class="card-name">Burrito Mixto<span class="badge special">Mixto</span></h3><p class="card-desc">Burrito con combinación de carnes y extras de la casa.</p></div>
+          <div class="card-footer"><span class="card-price">₡4,000</span><button class="add-btn" onclick="addToCart('Burrito Mixto', 4000, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+        <div class="food-card reveal" data-name="Costilla Ahumada BBQ">
+          <div class="card-img"><img src="ribs_hd.png" alt="Costilla Ahumada BBQ"></div>
+          <div class="card-body"><div><h3 class="card-name">Costilla Ahumada BBQ</h3><p class="card-desc">Costilla de cerdo ahumada con salsa BBQ de la casa.</p></div>
+          <div class="card-footer"><span class="card-price">₡4,500</span><button class="add-btn" onclick="addToCart('Costilla Ahumada BBQ', 4500, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+        <div class="food-card reveal" data-name="Gallo de Pescado">
+          <div class="card-img"><img src="fish_fillet_garlic_premium_1776174040425.png" alt="Gallo de Pescado"></div>
+          <div class="card-body"><div><h3 class="card-name">Gallo de Pescado</h3><p class="card-desc">Filete de pescado servido con acompañamientos.</p></div>
+          <div class="card-footer"><span class="card-price">₡4,000</span><button class="add-btn" onclick="addToCart('Gallo de Pescado', 4000, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+        <div class="food-card reveal" data-name="Hamburguesa">
+          <div class="card-img"><img src="burger_fries_premium_1775836885209.png" alt="Hamburguesa"></div>
+          <div class="card-body"><div><h3 class="card-name">Hamburguesa</h3><p class="card-desc">Hamburguesa sencilla con los ingredientes básicos.</p></div>
+          <div class="card-footer"><span class="card-price">₡2,000</span><button class="add-btn" onclick="addToCart('Hamburguesa', 2000, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+        <div class="food-card reveal" data-name="Hamburguesa con Papas">
+          <div class="card-img"><img src="burger_fries_premium_1775836885209.png" alt="Hamburguesa con Papas"></div>
+          <div class="card-body"><div><h3 class="card-name">Hamburguesa con Papas</h3><p class="card-desc">Hamburguesa acompañada de papas fritas crujientes.</p></div>
+          <div class="card-footer"><span class="card-price">₡3,000</span><button class="add-btn" onclick="addToCart('Hamburguesa con Papas', 3000, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+        <div class="food-card reveal" data-name="Hamburguesa de la Casa">
+          <div class="card-img"><img src="burger_fries_premium_1775836885209.png" alt="Hamburguesa de la Casa"></div><div class="card-body"><div><h3 class="card-name">Hamburguesa de la Casa<span class="badge special">Recomendado</span></h3><p class="card-desc">Nuestra hamburguesa especial con ingredientes de la casa.</p></div>
+          <div class="card-footer"><span class="card-price">₡4,500</span><button class="add-btn" onclick="addToCart('Hamburguesa de la Casa', 4500, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+        <div class="food-card reveal" data-name="Chalupas">
+          <div class="card-img"><img src="tacos_premium_chalk.png" alt="Chalupas"></div>
+          <div class="card-body"><div><h3 class="card-name">Chalupas</h3><p class="card-desc">Chalupas crujientes con relleno de la casa.</p></div>
+          <div class="card-footer"><span class="card-price">₡3,000</span><button class="add-btn" onclick="addToCart('Chalupas', 3000, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+        <div class="food-card reveal" data-name="Nachos">
+          <div class="card-img"><img src="tacos_premium_chalk.png" alt="Nachos"></div>
+          <div class="card-body"><div><h3 class="card-name">Nachos</h3><p class="card-desc">Nachos con queso fundido y salsas.</p></div>
+          <div class="card-footer"><span class="card-price">₡3,500</span><button class="add-btn" onclick="addToCart('Nachos', 3500, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+        <div class="food-card reveal" data-name="Nachos Mixtos">
+          <div class="card-img"><img src="tacos_premium_chalk.png" alt="Nachos Mixtos"></div><div class="card-body"><div><h3 class="card-name">Nachos Mixtos<span class="badge special">Mixto</span></h3><p class="card-desc">Nachos con combinación de carnes y queso fundido.</p></div>
+          <div class="card-footer"><span class="card-price">₡4,000</span><button class="add-btn" onclick="addToCart('Nachos Mixtos', 4000, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+        <div class="food-card reveal" data-name="Papas Nachos">
+          <div class="card-img"><img src="burger_fries_premium_1775836885209.png" alt="Papas Nachos"></div>
+          <div class="card-body"><div><h3 class="card-name">Papas Nachos</h3><p class="card-desc">Papas fritas con queso y toppings de nacho.</p></div>
+          <div class="card-footer"><span class="card-price">₡3,500</span><button class="add-btn" onclick="addToCart('Papas Nachos', 3500, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+        <div class="food-card reveal" data-name="Papas Nachos Mixtos">
+          <div class="card-img"><img src="burger_fries_premium_1775836885209.png" alt="Papas Nachos Mixtos"></div><div class="card-body"><div><h3 class="card-name">Papas Nachos Mixtos<span class="badge special">Mixto</span></h3><p class="card-desc">Papas nachos con combinación de carnes.</p></div>
+          <div class="card-footer"><span class="card-price">₡4,000</span><button class="add-btn" onclick="addToCart('Papas Nachos Mixtos', 4000, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+        <div class="food-card reveal" data-name="Pelota con Papas">
+          <div class="card-img"><img src="burger_fries_premium_1775836885209.png" alt="Pelota con Papas"></div>
+          <div class="card-body"><div><h3 class="card-name">Pelota con Papas</h3><p class="card-desc">Pelota de carne con papas fritas.</p></div>
+          <div class="card-footer"><span class="card-price">₡3,500</span><button class="add-btn" onclick="addToCart('Pelota con Papas', 3500, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+        <div class="food-card reveal" data-name="Pollo Burguer">
+          <div class="card-img"><img src="fried_chicken_premium_chalk.png" alt="Pollo Burguer"></div>
+          <div class="card-body"><div><h3 class="card-name">Pollo Burguer</h3><p class="card-desc">Hamburguesa de pollo con vegetales frescos.</p></div>
+          <div class="card-footer"><span class="card-price">₡4,000</span><button class="add-btn" onclick="addToCart('Pollo Burguer', 4000, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+        <div class="food-card reveal" data-name="Taco San José">
+          <div class="card-img"><img src="tacos_premium_chalk.png" alt="Taco San José"></div><div class="card-body"><div><h3 class="card-name">Taco San José<span class="badge popular">Popular</span></h3><p class="card-desc">Nuestro taco especial con los sabores de la casa.</p></div>
+          <div class="card-footer"><span class="card-price">₡3,500</span><button class="add-btn" onclick="addToCart('Taco San José', 3500, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+        <div class="food-card reveal" data-name="Taco Sencillo">
+          <div class="card-img"><img src="tacos_premium_chalk.png" alt="Taco Sencillo"></div>
+          <div class="card-body"><div><h3 class="card-name">Taco Sencillo</h3><p class="card-desc">Taco clásico con relleno de la casa.</p></div>
+          <div class="card-footer"><span class="card-price">₡2,000</span><button class="add-btn" onclick="addToCart('Taco Sencillo', 2000, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+        <div class="food-card reveal" data-name="Taco con Papas">
+          <div class="card-img"><img src="tacos_premium_chalk.png" alt="Taco con Papas"></div>
+          <div class="card-body"><div><h3 class="card-name">Taco con Papas</h3><p class="card-desc">Taco acompañado de papas fritas crujientes.</p></div>
+          <div class="card-footer"><span class="card-price">₡2,500</span><button class="add-btn" onclick="addToCart('Taco con Papas', 2500, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+        <div class="food-card reveal" data-name="Wrap de Pollo o Carne" data-select="Relleno*:Pollo|Carne">
+          <div class="card-img"><img src="tacos_premium_chalk.png" alt="Wrap"></div>
+          <div class="card-body"><div><h3 class="card-name">Wrap de Pollo o Carne</h3><p class="card-desc">Wrap enrollado con vegetales y salsa. Elige relleno.</p></div>
+          <div class="card-footer"><span class="card-price">₡3,500</span><button class="add-btn" onclick="addToCart('Wrap', 3500, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+        <div class="food-card reveal" data-name="Orden de Papas Fritas">
+          <div class="card-img"><img src="burger_fries_premium_1775836885209.png" alt="Papas Fritas"></div>
+          <div class="card-body"><div><h3 class="card-name">Orden de Papas Fritas</h3><p class="card-desc">Porción generosa de papas fritas crujientes.</p></div>
+          <div class="card-footer"><span class="card-price">₡2,500</span><button class="add-btn" onclick="addToCart('Orden de Papas Fritas', 2500, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- CASADOS -->
+    <section id="casados" class="menu-section">
+      <div class="section-header"><h2 class="section-title">Casados</h2><div class="section-line"></div></div>
+      <p class="section-note">Incluye arroz, frijoles y ensalada del día. Elige tu proteína. Extras opcionales por ₡500 c/u.</p>
+      <div class="cards-grid">
+
+        <div class="food-card reveal" data-name="Casado"
+             data-select="Proteína*:Chuleta|Bistec|Carne en salsa|Pescado|Pollo"
+             data-extras="Huevo frito:500,Queso frito:500,Tortillitas:500">
+          <div class="card-img"><img src="casado_premium_1775836869973.png" alt="Casado"></div><div class="card-body"><div><h3 class="card-name">Casado<span class="badge popular">Popular</span></h3><p class="card-desc">Arroz, frijoles y ensalada. Elige tu proteína.</p></div>
+          <div class="card-footer"><span class="card-price">₡4,000</span><button class="add-btn" onclick="addToCart('Casado', 4000, this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- GALLERY -->
+  <section id="galeria" class="gallery-section" style="display:none">
+    <div class="gallery-header">
+      <div class="gallery-title-wrap">
+        <h2 class="gallery-title">Nuestra Cocina</h2>
+        <div class="section-line"></div>
+      </div>
+      <p class="gallery-subtitle">Fotos reales de nuestros platos</p>
+    </div>
+    <div class="gallery-strip" id="gallery-strip"></div>
+  </section>
+
+  <!-- LIGHTBOX -->
+  <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <button class="lightbox-prev" onclick="lightboxNav(-1, event)">&#8249;</button>
+    <div class="lightbox-content">
+      <img id="lightbox-img" src="" alt="">
+      <p id="lightbox-caption" class="lightbox-caption"></p>
+    </div>
+    <button class="lightbox-next" onclick="lightboxNav(1, event)">&#8250;</button>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p class="footer-address" id="footer-address">San José de Trojas</p>
+      <a href="tel:50683108026" class="footer-tel" id="footer-tel">+(506) 8310-8026</a>
+      <div class="footer-hours">
+        <span id="footer-hours">Jueves a Domingo: 7:00 AM – 9:00 PM</span>
+      </div>
+      <p class="footer-copy" id="footer-copy">© 2026 Cocina y Parrilla San José. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <!-- CART FAB -->
+  <button id="cart-fab" class="cart-fab" onclick="toggleCart()">
+    <div id="cart-count" class="cart-count hidden">0</div>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+  </button>
+
+  <!-- CART OVERLAY -->
+  <div id="cart-overlay" class="cart-overlay">
+    <div class="cart-backdrop" onclick="toggleCart()"></div>
+    <div class="cart-sheet">
+      <div class="cart-handle"></div>
+      <div class="cart-head">
+        <h2 class="cart-title">Tu Pedido</h2>
+        <button class="cart-close" onclick="toggleCart()">✕</button>
+      </div>
+      
+      <div class="cart-body">
+        <div id="cart-items" class="cart-items"></div>
+        <div id="cart-empty" class="cart-empty show">
+          <p>Tu carrito está vacío</p>
+          <span>Agrega platos del menú para empezar</span>
+        </div>
+      </div>
+
+      <div class="cart-foot">
+        <!-- Order Type Section (Built by JS) -->
+        <div id="order-type-wrap" class="order-type-wrap"></div>
+
+        <div id="subtotal-row" class="total-row subtotal-row" style="display:none">
+          <span>Subtotal</span><span id="cart-subtotal-value">₡0</span>
+        </div>
+        <div id="iva-row" class="total-row iva-row" style="display:none">
+          <span>IVA (10%)</span><span id="cart-iva-value">₡0</span>
+        </div>
+        <div id="delivery-row" class="total-row delivery-row" style="display:none">
+          <span>Más envío</span><span id="cart-delivery-value"></span>
+        </div>
+        <div class="total-row">
+          <span>Total del Pedido</span>
+          <span id="cart-total-value" class="total-amount">₡0</span>
+        </div>
+        
+        <button class="wa-btn" onclick="sendToWhatsApp()">
+          <svg viewBox="0 0 24 24" fill="white" width="20" height="20"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Enviar Pedido por WhatsApp
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SELECTION MODAL (required radio groups) -->
+  <div id="selection-modal" class="modal-overlay">
+    <div class="modal-sheet">
+      <div class="modal-head">
+        <h2 id="selection-item-name" class="modal-title">Nombre del Item</h2>
+        <button class="cart-close" onclick="closeSelectionModal()">✕</button>
+      </div>
+      <p class="modal-subtitle">Selecciona las opciones requeridas para continuar.</p>
+      <div id="selection-groups"></div>
+      <div id="selection-extras-wrap" style="display:none">
+        <p class="modal-subtitle" style="margin-top:1rem">Extras opcionales:</p>
+        <div id="selection-extras-list"></div>
+      </div>
+      <div class="extras-foot">
+        <div class="extras-total-row">
+          <span>Total</span>
+          <span id="selection-total">₡0</span>
+        </div>
+        <button class="confirm-btn" onclick="confirmSelection()">Agregar al pedido</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXTRAS MODAL -->
+  <div id="extras-modal" class="modal-overlay">
+    <div class="modal-sheet">
+      <div class="modal-head">
+        <h2 id="extras-item-name" class="modal-title">Nombre del Item</h2>
+        <button class="cart-close" onclick="closeExtrasModal()">✕</button>
+      </div>
+      <p class="modal-subtitle">Personaliza tu pedido seleccionando los extras que desees.</p>
+      
+      <div class="modal-body">
+        <div id="extras-list" class="extras-list"></div>
+      </div>
+
+      <div class="modal-foot">
+        <div class="extras-total-row">
+          <span>Subtotal con extras</span>
+          <span id="extras-total" class="extras-total-price">₡0</span>
+        </div>
+        <button class="add-confirm-btn" onclick="confirmExtras()">Confirmar y Agregar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADMIN QR MODAL -->
+  <div id="qr-modal" class="modal-overlay">
+    <div class="modal-sheet">
+      <div class="modal-head">
+        <h2 class="modal-title">Generador de QR</h2>
+        <button class="cart-close" onclick="closeQrModal()">✕</button>
+      </div>
+      
+      <div class="qr-modal-body">
+        <div class="qr-input-row">
+          <span>Número de Mesa:</span>
+          <input type="number" id="mesa-input" class="mesa-num-input" value="1" min="1" max="50">
+          <button class="qr-gen-btn" onclick="generateQR()">Actualizar</button>
+        </div>
+        
+        <div id="qr-output" class="qr-output">
+          <!-- QR Canvas -->
+        </div>
+        
+        <p class="qr-hint">Imprime este código y colócalo en la mesa para que tus clientes puedan pedir directamente.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Admin QR Button (Hidden by default, shown via ?admin=1) -->
+  <button id="admin-qr-btn" onclick="openQrModal()" title="Generar QR para mesas">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h7v7h-7z"/><path d="M14 14h3v3h-3z"/><path d="M18 18h3v3h-3z"/></svg>
+  </button>
+
+  <!-- SCRIPTS -->
+  <!-- QRCode Library -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+  <!-- Configuración del restaurante — editar config.js para cambiar nombre/logo/teléfono -->
+  <script src="config.js"></script>
+  <!-- Gallery config — add photos in gallery/gallery.js -->
+  <script src="gallery/gallery.js"></script>
+  <!-- App Logic -->
+  <script src="app.js?v=1.3"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(() => {});
+      });
+    }
+  </script>
+
+</body>
+</html>
+

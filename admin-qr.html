@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin QR — Cocina y Parrilla San José</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <!-- Librería QR -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <script>
+    // REDIRECCIÓN AUTOMÁTICA PARA CLIENTES
+    // Si entran a esta página con un parámetro ?mesa o ?m, los mandamos al menú real
+    const params = new URLSearchParams(window.location.search);
+    if (params.has('mesa') || params.has('m')) {
+      window.location.href = 'index.html' + window.location.search;
+    }
+  </script>
+
+  <style>
+    :root {
+      --yellow: #FFCC00;
+      --yellow-glow: rgba(255, 204, 0, 0.25);
+      --black: #080808;
+      --dark: #111111;
+      --card: #181818;
+      --border: #242424;
+      --text: #ffffff;
+      --text-muted: #888888;
+      --radius: 16px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--black);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, sans-serif;
+      min-height: 100vh;
+      padding: 0 0 80px;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      background: linear-gradient(180deg, #0f0f0f 0%, var(--black) 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 28px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+    }
+
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .header-icon {
+      font-size: 2rem;
+      line-height: 1;
+    }
+
+    .header-text h1 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.3px;
+    }
+
+    .header-text p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .header-badge {
+      background: var(--yellow);
+      color: var(--black);
+      font-size: 0.7rem;
+      font-weight: 900;
+      padding: 4px 10px;
+      border-radius: 100px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* ── BASE URL INDICATOR ── */
+    .base-url-bar {
+      background: var(--dark);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 32px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .base-url-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+
+    .base-url-input {
+      flex: 1;
+      min-width: 200px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: 'Inter', monospace;
+      font-size: 0.85rem;
+      padding: 8px 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .base-url-input:focus {
+      border-color: var(--yellow);
+    }
+
+    .base-url-hint {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      width: 100%;
+      margin-top: 2px;
+    }
+
+    /* ── GRID MESAS ── */
+    .mesas-container {
+      max-width: 1200px;
+      margin: 32px auto;
+      padding: 0 24px;
+    }
+
+    .mesas-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 20px;
+    }
+
+    .mesas-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    /* ── MESA CARD ── */
+    .mesa-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: border-color 0.25s, transform 0.25s;
+    }
+
+    .mesa-card:hover {
+      border-color: rgba(255, 204, 0, 0.4);
+      transform: translateY(-4px);
+    }
+
+    .mesa-card-header {
+      padding: 16px 18px 12px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .mesa-number {
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: var(--yellow);
+      letter-spacing: -0.5px;
+    }
+
+    .mesa-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    /* ── QR AREA ── */
+    .qr-wrapper {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      flex: 1;
+    }
+
+    .qr-box {
+      background: #fff;
+      border-radius: 10px;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 148px;
+      min-width: 148px;
+      position: relative;
+    }
+
+    .qr-box canvas,
+    .qr-box img {
+      display: block;
+      border-radius: 4px;
+    }
+
+    .qr-url {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      text-align: center;
+      word-break: break-all;
+      line-height: 1.5;
+    }
+
+    /* ── BOTONES ── */
+    .mesa-actions {
+      padding: 0 18px 18px;
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-dl {
+      flex: 1;
+      padding: 10px;
+      background: var(--yellow);
+      color: var(--black);
+      border: none;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+
+    .btn-dl:hover {
+      opacity: 0.9;
+      transform: scale(1.02);
+    }
+
+    .btn-dl:active {
+      transform: scale(0.97);
+    }
+
+    .btn-test {
+      padding: 10px 14px;
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn-test:hover {
+      border-color: rgba(255, 204, 0, 0.5);
+      color: var(--yellow);
+    }
+
+    /* ── ACCIONES GLOBALES ── */
+    .global-actions {
+      max-width: 1200px;
+      margin: 0 auto 32px;
+      padding: 0 24px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn-global {
+      padding: 11px 22px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s;
+      border: none;
+    }
+
+    .btn-global:hover { opacity: 0.88; transform: scale(1.02); }
+    .btn-global:active { transform: scale(0.97); }
+
+    .btn-global.primary {
+      background: var(--yellow);
+      color: var(--black);
+    }
+
+    .btn-global.secondary {
+      background: var(--dark);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    /* ── PRINT OVERRIDES ── */
+    @media print {
+      .header, .base-url-bar, .global-actions, .btn-dl, .btn-test, .mesa-actions { display: none !important; }
+      .mesas-container { padding: 0; margin: 0; }
+      .mesas-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+      body { background: white; color: black; }
+      .mesa-card { border: 1px solid #ccc; break-inside: avoid; }
+      .qr-url { color: #555; }
+      .mesa-number { color: #c8a000; }
+      .mesa-label { color: #777; }
+    }
+
+    /* ── MODAL PREVIEW ── */
+    .preview-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s;
+      backdrop-filter: blur(6px);
+    }
+
+    .preview-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .preview-modal {
+      background: var(--dark);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      width: 420px;
+      height: 85vh;
+      max-height: 860px;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.6);
+      transform: scale(0.95) translateY(12px);
+      transition: transform 0.25s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    .preview-overlay.open .preview-modal {
+      transform: scale(1) translateY(0);
+    }
+
+    .preview-header {
+      padding: 14px 18px;
+      background: #0f0f0f;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .preview-mesa-tag {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .preview-mesa-tag .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--yellow);
+      flex-shrink: 0;
+    }
+
+    .preview-mesa-tag span {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .preview-url-bar {
+      flex: 1;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-family: monospace;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .preview-close {
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .preview-close:hover {
+      color: var(--text);
+      border-color: rgba(255,204,0,0.4);
+    }
+
+    .preview-nav {
+      padding: 10px 18px;
+      background: #0d0d0d;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .preview-nav-btn {
+      padding: 7px 16px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .preview-nav-btn:hover {
+      border-color: rgba(255,204,0,0.4);
+      color: var(--yellow);
+    }
+
+    .preview-nav-btn.primary {
+      background: var(--yellow);
+      color: var(--black);
+      border-color: var(--yellow);
+      font-weight: 800;
+    }
+
+    .preview-nav-btn.primary:hover {
+      opacity: 0.88;
+    }
+
+    .preview-arrows {
+      display: flex;
+      gap: 6px;
+    }
+
+    .preview-arrow {
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .preview-arrow:hover:not(:disabled) {
+      border-color: rgba(255,204,0,0.4);
+      color: var(--yellow);
+    }
+
+    .preview-arrow:disabled {
+      opacity: 0.3;
+      cursor: default;
+    }
+
+    .preview-frame-wrap {
+      flex: 1;
+      overflow: hidden;
+      position: relative;
+      background: #000;
+    }
+
+    .preview-loading {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      background: var(--black);
+      z-index: 1;
+      transition: opacity 0.3s;
+    }
+
+    .preview-loading.hidden { opacity: 0; pointer-events: none; }
+
+    .spinner {
+      width: 32px;
+      height: 32px;
+      border: 3px solid var(--border);
+      border-top-color: var(--yellow);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .preview-iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .header { padding: 18px 16px; }
+      .base-url-bar { padding: 12px 16px; }
+      .mesas-container, .global-actions { padding: 0 12px; }
+      .mesas-container { margin: 20px auto; }
+      .mesas-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .header-text h1 { font-size: 1rem; }
+      .preview-modal { width: 96vw; height: 92vh; }
+      .preview-url-bar { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── HEADER ── -->
+  <header class="header">
+    <div class="header-brand">
+      <span class="header-icon">🍽️</span>
+      <div class="header-text">
+        <h1>Cocina y Parrilla San José</h1>
+        <p>Generador de QR por mesa</p>
+      </div>
+    </div>
+    <span class="header-badge">Admin</span>
+  </header>
+
+  <!-- ── BASE URL ── -->
+  <div class="base-url-bar">
+    <span class="base-url-label">URL del menú</span>
+    <input
+      type="text"
+      class="base-url-input"
+      id="base-url"
+      placeholder="https://tu-dominio.com/index.html"
+    />
+    <p class="base-url-hint">⚡ Edita la URL si el dominio cambia — los QR se regeneran automáticamente</p>
+  </div>
+
+  <!-- ── ACCIONES GLOBALES ── -->
+  <div class="global-actions">
+    <button class="btn-global primary" onclick="downloadAll()">⬇ Descargar todos los QR</button>
+    <button class="btn-global secondary" onclick="window.print()">🖨 Imprimir página</button>
+    <button class="btn-global secondary" onclick="openMenu()">↗ Ver menú</button>
+  </div>
+
+  <!-- ── GRID MESAS ── -->
+  <div class="mesas-container">
+    <p class="mesas-title">12 Mesas — Haz click en "Ver" para previsualizar, o en "⬇" para descargar el QR</p>
+    <div class="mesas-grid" id="mesas-grid"></div>
+  </div>
+
+  <!-- ── MODAL VISTA PREVIA ── -->
+  <div class="preview-overlay" id="preview-overlay">
+    <div class="preview-modal" onclick="event.stopPropagation()">
+
+      <!-- Barra superior estilo browser -->
+      <div class="preview-header">
+        <div class="preview-mesa-tag">
+          <div class="dot"></div>
+          <span id="preview-mesa-label">Mesa 1</span>
+        </div>
+        <div class="preview-url-bar" id="preview-url-display"></div>
+        <button class="preview-close" onclick="closePreview()">✕</button>
+      </div>
+
+      <!-- Navegación entre mesas -->
+      <div class="preview-nav">
+        <div class="preview-arrows">
+          <button class="preview-arrow" id="prev-btn" onclick="navigateMesa(-1)" title="Mesa anterior">‹</button>
+          <button class="preview-arrow" id="next-btn" onclick="navigateMesa(1)" title="Mesa siguiente">›</button>
+        </div>
+        <button class="preview-nav-btn primary" onclick="openInTab()">↗ Abrir en pestaña</button>
+      </div>
+
+      <!-- Iframe del menú -->
+      <div class="preview-frame-wrap">
+        <div class="preview-loading" id="preview-loading">
+          <div class="spinner"></div>
+          <span>Cargando menú...</span>
+        </div>
+        <iframe
+          class="preview-iframe"
+          id="preview-iframe"
+          title="Vista previa del menú"
+        ></iframe>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const TOTAL_MESAS = 12;
+
+    /* ── OBTENER URL BASE ── */
+    function getBaseUrl() {
+      const custom = document.getElementById('base-url').value.trim();
+      if (custom) return custom.replace(/[?#].*$/, '');
+      
+      // Simplemente usamos la raíz del servidor
+      return window.location.origin + '/';
+    }
+
+    /* ── CREAR CARD DE MESA ── */
+    function createMesaCard(n) {
+      const card = document.createElement('div');
+      card.className = 'mesa-card';
+      card.id = `mesa-card-${n}`;
+
+      card.innerHTML = `
+        <div class="mesa-card-header">
+          <span class="mesa-number">Mesa ${n}</span>
+          <span class="mesa-label">Código QR</span>
+        </div>
+        <div class="qr-wrapper">
+          <div class="qr-box" id="qr-${n}"></div>
+          <p class="qr-url" id="qr-url-${n}"></p>
+        </div>
+        <div class="mesa-actions">
+          <button class="btn-dl" onclick="downloadQR(${n})">⬇ Descargar</button>
+          <button class="btn-test" onclick="openPreview(${n})">👁 Ver</button>
+        </div>
+      `;
+
+      return card;
+    }
+
+    /* ── GENERAR QR ── */
+    function generateQR(n, baseUrl) {
+      const box = document.getElementById(`qr-${n}`);
+      const urlEl = document.getElementById(`qr-url-${n}`);
+      const url = `${baseUrl}?mesa=${n}`;
+
+      box.innerHTML = ''; // limpiar QR anterior
+
+      new QRCode(box, {
+        text: url,
+        width: 128,
+        height: 128,
+        colorDark: '#000000',
+        colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.H
+      });
+
+      urlEl.textContent = url;
+      box.dataset.url = url;
+      box.dataset.mesa = n;
+    }
+
+    /* ── REGENERAR TODOS ── */
+    function regenerateAll() {
+      const base = getBaseUrl();
+      for (let i = 1; i <= TOTAL_MESAS; i++) {
+        generateQR(i, base);
+      }
+    }
+
+    /* ── DESCARGAR QR INDIVIDUAL ── */
+    function downloadQR(n) {
+      const box = document.getElementById(`qr-${n}`);
+      const canvas = box.querySelector('canvas');
+      if (!canvas) return;
+
+      // Crear canvas con margen y etiqueta
+      const pad = 20;
+      const labelH = 36;
+      const off = document.createElement('canvas');
+      off.width = canvas.width + pad * 2;
+      off.height = canvas.height + pad * 2 + labelH;
+      const ctx = off.getContext('2d');
+
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, off.width, off.height);
+      ctx.drawImage(canvas, pad, pad);
+
+      ctx.fillStyle = '#000000';
+      ctx.font = 'bold 16px Inter, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(`Mesa ${n} — Cocina y Parrilla San José`, off.width / 2, canvas.height + pad + 24);
+
+      const link = document.createElement('a');
+      link.download = `mesa-${n}-qr.png`;
+      link.href = off.toDataURL('image/png');
+      link.click();
+    }
+
+    /* ── DESCARGAR TODOS ── */
+    async function downloadAll() {
+      for (let i = 1; i <= TOTAL_MESAS; i++) {
+        await new Promise(r => setTimeout(r, 300));
+        downloadQR(i);
+      }
+    }
+
+    /* ── PREVIEW MODAL ── */
+    let currentPreviewMesa = 1;
+
+    function openPreview(n) {
+      currentPreviewMesa = n;
+      loadPreviewMesa(n);
+      document.getElementById('preview-overlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closePreview() {
+      document.getElementById('preview-overlay').classList.remove('open');
+      document.body.style.overflow = '';
+      setTimeout(() => { document.getElementById('preview-iframe').src = ''; }, 300);
+    }
+
+    function loadPreviewMesa(n) {
+      const url = document.getElementById(`qr-${n}`)?.dataset.url;
+      if (!url) return;
+
+      document.getElementById('preview-mesa-label').textContent = `Mesa ${n}`;
+      document.getElementById('preview-url-display').textContent = url;
+
+      // Botones prev/next
+      document.getElementById('prev-btn').disabled = n <= 1;
+      document.getElementById('next-btn').disabled = n >= TOTAL_MESAS;
+
+      // Mostrar loading y cargar iframe
+      document.getElementById('preview-loading').classList.remove('hidden');
+      document.getElementById('preview-iframe').src = url;
+    }
+
+    function navigateMesa(dir) {
+      const next = currentPreviewMesa + dir;
+      if (next < 1 || next > TOTAL_MESAS) return;
+      currentPreviewMesa = next;
+      loadPreviewMesa(next);
+    }
+
+    function openInTab() {
+      const url = document.getElementById(`qr-${currentPreviewMesa}`)?.dataset.url;
+      if (url) window.open(url, '_blank');
+    }
+
+    /* ── VER MENÚ ── */
+    function openMenu() {
+      window.open(getBaseUrl(), '_blank');
+    }
+
+    /* ── INIT ── */
+    document.addEventListener('DOMContentLoaded', () => {
+      const grid = document.getElementById('mesas-grid');
+
+      // Crear las 12 cards
+      for (let i = 1; i <= TOTAL_MESAS; i++) {
+        grid.appendChild(createMesaCard(i));
+      }
+
+      // Autodetectar URL base
+      const detectedBase = getBaseUrl();
+      document.getElementById('base-url').value = detectedBase;
+
+      // Generar todos los QR
+      regenerateAll();
+
+      // Actualizar QR cuando cambia la URL
+      let debounce;
+      document.getElementById('base-url').addEventListener('input', () => {
+        clearTimeout(debounce);
+        debounce = setTimeout(regenerateAll, 500);
+      });
+
+      // Cerrar al hacer click en el fondo oscuro
+      document.getElementById('preview-overlay').addEventListener('click', e => {
+        if (e.target === document.getElementById('preview-overlay')) closePreview();
+      });
+
+      // Ocultar loading cuando el iframe termina de cargar
+      document.getElementById('preview-iframe').addEventListener('load', () => {
+        document.getElementById('preview-loading').classList.add('hidden');
+      });
+
+      // Aviso si se abre sin servidor (file://)
+      if (window.location.protocol === 'file:') {
+        const bar = document.querySelector('.base-url-bar');
+        const warn = document.createElement('div');
+        warn.style.cssText = 'width:100%; margin-top:8px; padding:10px 14px; background:rgba(255,204,0,0.1); border:1px solid rgba(255,204,0,0.3); border-radius:8px; font-size:0.8rem; color:#FFCC00; font-weight:600;';
+        warn.innerHTML = '⚠️ Para ver la vista previa necesitas un servidor local. Corre: <code style="background:rgba(0,0,0,0.3);padding:2px 6px;border-radius:4px;">npx serve .</code> en la carpeta del proyecto.';
+        bar.appendChild(warn);
+      }
+
+      // Cerrar modal con Escape / navegar con flechas
+      document.addEventListener('keydown', e => {
+        const overlay = document.getElementById('preview-overlay');
+        if (!overlay.classList.contains('open')) return;
+        if (e.key === 'Escape') { overlay.classList.remove('open'); document.body.style.overflow = ''; }
+        if (e.key === 'ArrowLeft')  navigateMesa(-1);
+        if (e.key === 'ArrowRight') navigateMesa(1);
+      });
+    });
+  </script>
+
+</body>
+</html>

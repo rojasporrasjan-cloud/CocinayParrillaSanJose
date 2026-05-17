@@ -1,0 +1,614 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>MenÃº FÃ­sico - San JosÃ©</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #fdfbf7;
+      --text: #1a1a1a;
+      --accent: #b08d57;
+      --line: #e0dcd3;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #e0e0e0;
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    .sheet {
+      width: 210mm;
+      margin: 10mm auto;
+      background: var(--bg);
+      box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+      position: relative;
+    }
+    .cover {
+      height: 297mm;
+      padding: 20mm;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      page-break-after: always;
+      position: relative;
+    }
+    .cover-border {
+      position: absolute;
+      top: 15mm; bottom: 15mm; left: 15mm; right: 15mm;
+      border: 2px solid var(--accent);
+      outline: 1px solid var(--accent);
+      outline-offset: -5px;
+    }
+    .cover-logo {
+      width: 180px;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-bottom: 2rem;
+      border: 4px solid var(--accent);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    .cover-title {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 6rem;
+      letter-spacing: 6px;
+      color: var(--text);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+    }
+    .cover-subtitle {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-style: italic;
+      color: var(--accent);
+      margin-bottom: 4rem;
+    }
+    .cover-footer {
+      position: absolute;
+      bottom: 40mm;
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      color: #555;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .menu-pages {
+      padding: 20mm;
+      min-height: 297mm;
+    }
+    .menu-container {
+      column-count: 2;
+      column-gap: 15mm;
+    }
+    .category {
+      break-inside: avoid;
+      margin-bottom: 15mm;
+    }
+    .category-title {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 2.4rem;
+      color: var(--accent);
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 2px;
+      margin-bottom: 8px;
+      letter-spacing: 2px;
+      text-align: center;
+    }
+    .category-note {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 0.9rem;
+      color: #666;
+      text-align: center;
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+    .item {
+      break-inside: avoid;
+      margin-bottom: 10px;
+    }
+    .item-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 3px;
+    }
+    .item-name {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: var(--bg);
+      padding-right: 6px;
+      position: relative;
+      z-index: 2;
+      color: #000;
+    }
+    .item-dots {
+      flex-grow: 1;
+      border-bottom: 2px dotted var(--line);
+      margin: 0 4px;
+      position: relative;
+      top: -4px;
+      z-index: 1;
+    }
+    .item-price {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--text);
+      background: var(--bg);
+      padding-left: 6px;
+      position: relative;
+      z-index: 2;
+    }
+    .item-desc {
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      font-size: 0.8rem;
+      color: #444;
+      line-height: 1.4;
+      padding-right: 20px;
+    }
+    @media print {
+      body { background: white; }
+      .sheet { margin: 0; box-shadow: none; width: 100%; background: transparent; }
+      .item-name, .item-price { background: white; }
+    }
+    .print-btn {
+      position: fixed; bottom: 30px; right: 30px;
+      background: var(--accent); color: white; border: none; padding: 15px 30px;
+      border-radius: 50px; font-size: 1.1rem; font-family: 'Inter', sans-serif; font-weight: 600;
+      cursor: pointer; box-shadow: 0 4px 15px rgba(176, 141, 87, 0.4);
+      transition: transform 0.2s; z-index: 100;
+    }
+    .print-btn:hover { transform: scale(1.05); }
+    @media print { .print-btn { display: none; } }
+  </style>
+</head>
+<body>
+  <button class="print-btn" onclick="window.print()">ðŸ–¨ï¸ Imprimir MenÃº Premium</button>
+  <div class="sheet">
+    <div class="cover">
+      <div class="cover-border"></div>
+      <img src="logo.jpeg" alt="Logo" class="cover-logo" onerror="this.style.display='none'">
+      <div class="cover-title">SAN JOSÃ‰</div>
+      <div class="cover-subtitle">Cocina Tradicional & Parrilla</div>
+      <div class="cover-footer">MenÃº de Especialidades</div>
+    </div>
+  </div>
+  <div class="sheet menu-pages">
+    <div class="menu-container">
+                  <div class="category">
+              <div class="category-title">Bebidas Gaseosas</div>
+              
+                            <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Gaseosa Vidrio</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡1,000</div>
+                </div>
+                <div class="item-desc">Presentación en botella de vidrio.</div>
+              </div>              <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Frescos Desechables</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡1,200</div>
+                </div>
+                <div class="item-desc">Bebidas refrescantes en envase desechable.</div>
+              </div>              <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Gaseosa 1.5L</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡2,000</div>
+                </div>
+                <div class="item-desc">Botella familiar para la mesa.</div>
+              </div>              <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Gaseosa 2.5L</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡2,500</div>
+                </div>
+                <div class="item-desc">Botella grande para grupo.</div>
+              </div>              <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Agua</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡1,000</div>
+                </div>
+                <div class="item-desc">Agua purificada en botella.</div>
+              </div>              <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Aloe Vera</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡1,400</div>
+                </div>
+                <div class="item-desc">Bebida natural de aloe vera.</div>
+              </div>              <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Powerade</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡1,400</div>
+                </div>
+                <div class="item-desc">Bebida hidratante deportiva.</div>
+              </div>              <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Jugo Lata</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡600</div>
+                </div>
+                <div class="item-desc">Jugo de fruta en lata.</div>
+              </div>
+            </div>            <div class="category">
+              <div class="category-title">Batidos Naturales</div>
+              <div class="category-note">Sabores: Papaya · Piña · Frutas · Sabor semanal</div>
+                            <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Batido de Agua</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡1,200</div>
+                </div>
+                <div class="item-desc">Batido natural preparado con agua.</div>
+              </div>              <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Batido de Leche</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡1,700</div>
+                </div>
+                <div class="item-desc">Batido cremoso con leche fresca.</div>
+              </div>
+            </div>            <div class="category">
+              <div class="category-title">Bebidas de Máquina</div>
+              
+                            <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Café Negro</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡1,500</div>
+                </div>
+                <div class="item-desc">Café espresso puro de máquina.</div>
+              </div>              <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Café con Leche</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡1,500</div>
+                </div>
+                <div class="item-desc">Espresso suavizado con leche.</div>
+              </div>              <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Café Mocca</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡1,500</div>
+                </div>
+                <div class="item-desc">Espresso con toque de chocolate.</div>
+              </div>              <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Capuchino Vainilla</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡1,500</div>
+                </div>
+                <div class="item-desc">Capuchino con sirope de vainilla.</div>
+              </div>              <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Chocolate</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡1,800</div>
+                </div>
+                <div class="item-desc">Chocolate caliente cremoso.</div>
+              </div>              <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Chocolate Gourmet</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡1,800</div>
+                </div>
+                <div class="item-desc">Chocolate premium con cacao de alta calidad.</div>
+              </div>              <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Chocochino</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡1,800</div>
+                </div>
+                <div class="item-desc">Mezcla de chocolate y capuchino.</div>
+              </div>
+            </div>            <div class="category">
+              <div class="category-title">Tradicionales</div>
+              
+                            <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Café Tradicional</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡1,000</div>
+                </div>
+                <div class="item-desc">Café costarricense servido en taza. Añade leche por +₡200.</div>
+              </div>              <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Chocolate Tradicional</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡1,000</div>
+                </div>
+                <div class="item-desc">Chocolate caliente tradicional casero.</div>
+              </div>              <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Agua Dulce</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡800</div>
+                </div>
+                <div class="item-desc">Bebida típica costarricense de tapa de dulce.</div>
+              </div>              <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Té</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡800</div>
+                </div>
+                <div class="item-desc">Té caliente a elección.</div>
+              </div>
+            </div>            <div class="category">
+              <div class="category-title">Pollo</div>
+              
+                            <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Cuarto / Muslo</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡2,000</div>
+                </div>
+                <div class="item-desc">Pieza de pollo. Con papas +₡500.</div>
+              </div>              <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Pechuga / Ala</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡2,500</div>
+                </div>
+                <div class="item-desc">Pieza de pollo jugosa. Con papas +₡500.</div>
+              </div>              <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Fajitas de Pollo</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡3,500</div>
+                </div>
+                <div class="item-desc">Tiras de pollo. Empanizadas o a la plancha.</div>
+              </div>              <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Alitas</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡3,500</div>
+                </div>
+                <div class="item-desc">Alitas crujientes. Bañadas o acompañadas. Elige salsa.</div>
+              </div>
+            </div>            <div class="category">
+              <div class="category-title">Para Compartir</div>
+              
+                            <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Surtida para 2 Carne</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡9,000</div>
+                </div>
+                <div class="item-desc">Selecciona los items que quieres en tu surtida.</div>
+              </div>              <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Surtida  para 2</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡7,000</div>
+                </div>
+                <div class="item-desc">Elige tu combo: hamburguesas, tacos o salchipapas.</div>
+              </div>              <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Surtida para 4 Carne</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡15,000</div>
+                </div>
+                <div class="item-desc">Selecciona los items que quieres en tu surtida.</div>
+              </div>
+            </div>            <div class="category">
+              <div class="category-title">Desayunos</div>
+              
+                            <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Sándwich</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡2,500</div>
+                </div>
+                <div class="item-desc">Sándwich para el desayuno. Elige el relleno.</div>
+              </div>              <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Empanadas</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡1,200</div>
+                </div>
+                <div class="item-desc">Empanaditas caseras fritas. Elige el relleno.</div>
+              </div>              <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Empanada Arreglada</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡1,800</div>
+                </div>
+                <div class="item-desc">Con natilla, salsa y vegetales. ₡1,800 con ensalada o ₡2,500 con papas.</div>
+              </div>
+            </div>            <div class="category">
+              <div class="category-title">Gallo Pinto</div>
+              <div class="category-note">Elige tu proteína y adicional. Adicional extra por ₡500.</div>
+                            <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Gallo Pinto</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡2,500</div>
+                </div>
+                <div class="item-desc">Arroz y frijoles con proteína y adicional a elegir.</div>
+              </div>
+            </div>            <div class="category">
+              <div class="category-title">Platos Fuertes</div>
+              
+                            <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Arroz con Camarones</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡4,500</div>
+                </div>
+                <div class="item-desc">Arroz cargado de camarones y especias.</div>
+              </div>              <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Arroz con Cerdo</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡4,000</div>
+                </div>
+                <div class="item-desc">Arroz con trozos de cerdo jugoso y sazón de la casa.</div>
+              </div>              <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Burrito</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡3,500</div>
+                </div>
+                <div class="item-desc">Burrito relleno con carne, arroz y frijoles.</div>
+              </div>              <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Burrito</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡4,000</div>
+                </div>
+                <div class="item-desc">Burrito con combinación de carnes y extras de la casa.</div>
+              </div>              <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Costilla Ahumada BBQ</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡4,500</div>
+                </div>
+                <div class="item-desc">Costilla de cerdo ahumada con salsa BBQ de la casa.</div>
+              </div>              <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Gallo de Pescado</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡4,000</div>
+                </div>
+                <div class="item-desc">Filete de pescado servido con acompañamientos.</div>
+              </div>              <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Hamburguesa</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡2,000</div>
+                </div>
+                <div class="item-desc">Hamburguesa sencilla con los ingredientes básicos.</div>
+              </div>              <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Hamburguesa con Papas</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡3,000</div>
+                </div>
+                <div class="item-desc">Hamburguesa acompañada de papas fritas crujientes.</div>
+              </div>              <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Hamburguesa de la Casa</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡4,500</div>
+                </div>
+                <div class="item-desc">Nuestra hamburguesa especial con ingredientes de la casa.</div>
+              </div>              <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Chalupas</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡3,000</div>
+                </div>
+                <div class="item-desc">Chalupas crujientes con relleno de la casa.</div>
+              </div>              <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Nachos</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡3,500</div>
+                </div>
+                <div class="item-desc">Nachos con queso fundido y salsas.</div>
+              </div>              <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Nachos s</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡4,000</div>
+                </div>
+                <div class="item-desc">Nachos con combinación de carnes y queso fundido.</div>
+              </div>              <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Papas Nachos</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡3,500</div>
+                </div>
+                <div class="item-desc">Papas fritas con queso y toppings de nacho.</div>
+              </div>              <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Papas Nachos s</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡4,000</div>
+                </div>
+                <div class="item-desc">Papas nachos con combinación de carnes.</div>
+              </div>              <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Pelota con Papas</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡3,500</div>
+                </div>
+                <div class="item-desc">Pelota de carne con papas fritas.</div>
+              </div>              <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Pollo Burguer</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡4,000</div>
+                </div>
+                <div class="item-desc">Hamburguesa de pollo con vegetales frescos.</div>
+              </div>              <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Taco San José</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡3,500</div>
+                </div>
+                <div class="item-desc">Nuestro taco especial con los sabores de la casa.</div>
+              </div>              <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Taco Sencillo</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡2,000</div>
+                </div>
+                <div class="item-desc">Taco clásico con relleno de la casa.</div>
+              </div>              <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Taco con Papas</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡2,500</div>
+                </div>
+                <div class="item-desc">Taco acompañado de papas fritas crujientes.</div>
+              </div>              <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Wrap de Pollo o Carne</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡3,500</div>
+                </div>
+                <div class="item-desc">Wrap enrollado con vegetales y salsa. Elige relleno.</div>
+              </div>              <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Orden de Papas Fritas</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡2,500</div>
+                </div>
+                <div class="item-desc">Porción generosa de papas fritas crujientes.</div>
+              </div>
+            </div>            <div class="category">
+              <div class="category-title">Casados</div>
+              <div class="category-note">Incluye arroz, frijoles y ensalada del día. Elige tu proteína. Extras opcionales por ₡500 c/u.</div>
+                            <div class="item">
+                <div class="item-header">
+                  <div class="item-name">Casado</div>
+                  <div class="item-dots"></div>
+                  <div class="item-price">₡4,000</div>
+                </div>
+                <div class="item-desc">Arroz, frijoles y ensalada. Elige tu proteína.</div>
+              </div>
+            </div>
+    </div>
+  </div>
+</body>
+</html>
