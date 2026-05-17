@@ -441,7 +441,36 @@ function buildOrderTypeUI() {
       </div>
     </div>`;
 
+  restoreDeliveryFields();
   if (orderType && !tableNumber) selectOrderType(orderType, false);
+}
+
+/* ── DELIVERY FIELDS — guardar y restaurar ── */
+const DELIVERY_STORAGE_KEY = 'sanjose_delivery_info';
+
+function restoreDeliveryFields() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(DELIVERY_STORAGE_KEY) || '{}');
+    const fields = { 'delivery-addr': saved.addr, 'delivery-nombre': saved.nombre, 'delivery-tel': saved.tel };
+    Object.entries(fields).forEach(([id, val]) => {
+      const el = document.getElementById(id);
+      if (el && val) el.value = val;
+    });
+  } catch {}
+
+  ['delivery-addr', 'delivery-nombre', 'delivery-tel'].forEach(id => {
+    document.getElementById(id)?.addEventListener('input', saveDeliveryFields);
+  });
+}
+
+function saveDeliveryFields() {
+  try {
+    localStorage.setItem(DELIVERY_STORAGE_KEY, JSON.stringify({
+      addr:   document.getElementById('delivery-addr')?.value   || '',
+      nombre: document.getElementById('delivery-nombre')?.value || '',
+      tel:    document.getElementById('delivery-tel')?.value    || '',
+    }));
+  } catch {}
 }
 
 function selectOrderType(type, save = true) {
