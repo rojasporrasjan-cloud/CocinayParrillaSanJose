@@ -116,11 +116,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const allCards    = document.querySelectorAll('.food-card');
   const allSections = document.querySelectorAll('.menu-section');
 
+  const normalizeText = (text) => {
+    return (text || '')
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase();
+  };
+
   searchInput.addEventListener('input', () => {
-    const term = searchInput.value.toLowerCase().trim();
+    const term = normalizeText(searchInput.value.trim());
     searchClear.classList.toggle('visible', term.length > 0);
     allCards.forEach(c =>
-      c.classList.toggle('hidden', term.length > 0 && !(c.dataset.name || '').toLowerCase().includes(term))
+      c.classList.toggle('hidden', term.length > 0 && !normalizeText(c.dataset.name).includes(term))
     );
     allSections.forEach(s => {
       s.style.display = [...s.querySelectorAll('.food-card')].some(c => !c.classList.contains('hidden')) ? '' : 'none';
