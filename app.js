@@ -852,3 +852,84 @@ function generateQR() {
     output.innerHTML = `<p style="color:var(--text-muted);font-size:0.85rem;padding:1rem">Cargando generador de QR...</p>`;
   }
 }
+
+/* ── TUTORIAL (DRIVER.JS) ───────────────────── */
+function iniciarTutorial() {
+  if (typeof window.driver === 'undefined') {
+    showToast('El tutorial aún está cargando...');
+    return;
+  }
+  
+  const driverObj = window.driver.js.driver;
+  
+  const tour = driverObj({
+    showProgress: true,
+    animate: true,
+    nextBtnText: 'Siguiente ➔',
+    prevBtnText: '← Anterior',
+    doneBtnText: '¡Entendido!',
+    progressText: 'Paso {{current}} de {{total}}',
+    allowClose: true,
+    steps: [
+      {
+        element: '.cat-nav',
+        popover: {
+          title: 'Navega el Menú',
+          description: 'Desliza y selecciona una categoría para encontrar rápido lo que buscas.',
+          side: 'bottom',
+          align: 'start'
+        }
+      },
+      {
+        element: '.search-wrap',
+        popover: {
+          title: 'Busca tu Antojo',
+          description: 'También puedes buscar platos por su nombre directamente aquí.',
+          side: 'bottom',
+          align: 'start'
+        }
+      },
+      {
+        element: '.food-card:not(.hidden) .add-btn',
+        popover: {
+          title: 'Agrega al Carrito',
+          description: 'Toca este botón para añadir un plato a tu pedido. Algunos platos te dejarán elegir extras.',
+          side: 'left',
+          align: 'center'
+        }
+      },
+      {
+        element: '#cart-fab',
+        popover: {
+          title: 'Tu Pedido',
+          description: 'Aquí verás todo lo que has agregado y el total de tu cuenta.',
+          side: 'left',
+          align: 'center'
+        }
+      },
+      {
+        popover: {
+          title: '¡Todo Listo!',
+          description: tableNumber 
+            ? 'Una vez en tu carrito, revisa tu pedido y envíalo a la cocina por WhatsApp. ¡A disfrutar!' 
+            : 'Una vez en tu carrito, selecciona cómo recibirlo y envíalo por WhatsApp. ¡A disfrutar!',
+          side: 'center',
+          align: 'center'
+        }
+      }
+    ]
+  });
+
+  tour.drive();
+  localStorage.setItem('sanjose_tutorial_seen', '1');
+}
+
+// Auto-start tutorial on first visit
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(() => {
+    if (!localStorage.getItem('sanjose_tutorial_seen')) {
+      iniciarTutorial();
+    }
+  }, 1500);
+});
+

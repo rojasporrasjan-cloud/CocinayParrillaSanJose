@@ -1567,6 +1567,78 @@ body {
   .cart-sheet  { max-height: 94vh; }
 }
 
+/* ── TUTORIAL ── */
+.tutorial-btn {
+  background: transparent;
+  color: var(--yellow);
+  border: none;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition);
+  margin-left: 0.5rem;
+  flex-shrink: 0;
+}
+.tutorial-btn svg {
+  width: 20px;
+  height: 20px;
+}
+.tutorial-btn:hover {
+  background: rgba(255, 204, 0, 0.1);
+  border-radius: 50%;
+  transform: scale(1.05);
+}
+
+/* Driver.js Theme Overrides */
+.driver-popover {
+  background: var(--dark) !important;
+  color: var(--text) !important;
+  border: 1px solid var(--yellow) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,204,0,0.2) !important;
+  font-family: 'Inter', sans-serif !important;
+}
+.driver-popover-title {
+  color: var(--yellow) !important;
+  font-family: 'Bebas Neue', cursive !important;
+  font-size: 1.5rem !important;
+  letter-spacing: 1px !important;
+  margin-bottom: 0.5rem !important;
+}
+.driver-popover-description {
+  color: var(--text) !important;
+  font-size: 0.85rem !important;
+  line-height: 1.4 !important;
+}
+.driver-popover-footer button {
+  background: transparent !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text-muted) !important;
+  border-radius: 6px !important;
+  text-shadow: none !important;
+}
+.driver-popover-footer button:hover {
+  background: rgba(255, 204, 0, 0.1) !important;
+  color: var(--yellow) !important;
+  border-color: var(--yellow) !important;
+}
+.driver-popover-footer .driver-popover-next-btn {
+  background: var(--yellow) !important;
+  color: var(--black) !important;
+  font-weight: 700 !important;
+  border-color: var(--yellow) !important;
+}
+.driver-popover-footer .driver-popover-next-btn:hover {
+  background: white !important;
+  color: var(--black) !important;
+}
+.driver-popover-progress-text {
+  color: var(--text-muted) !important;
+}
+
 /* ── PRINT STYLES (PHYSICAL MENU) ── */
 @media print {
   /* Reset colors for paper */
