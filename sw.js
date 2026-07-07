@@ -1,4 +1,4 @@
-const CACHE = 'sanjose-menu-v8';
+const CACHE = 'sanjose-menu-v9';
 
 const ASSETS = [
   '/',
@@ -27,19 +27,37 @@ self.addEventListener('activate', e => {
   );
 });
 
-// Cache-first para assets locales, network-first para todo lo demás
+// Network-First para HTML, Stale-While-Revalidate para assets
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
   const url = new URL(e.request.url);
   const isLocal = url.origin === self.location.origin;
 
-  if (isLocal) {
+  // 1. Network-First para HTML (asegura que siempre reciban la última versión de la app si hay internet)
+  if (e.request.mode === 'navigate' || url.pathname === '/' || url.pathname === '/index.html') {
     e.respondWith(
-      caches.match(e.request).then(cached => cached || fetch(e.request).then(res => {
-        const clone = res.clone();
-        caches.open(CACHE).then(c => c.put(e.request, clone));
-        return res;
-      }))
+      fetch(e.request)
+        .then(res => {
+          const clone = res.clone();
+          caches.open(CACHE).then(c => c.put(e.request, clone));
+          return res;
+        })
+        .catch(() => caches.match(e.request))
+    );
+    return;
+  }
+
+  // 2. Stale-While-Revalidate para Assets (rápido pero se actualiza en segundo plano)
+  if (isLocal || url.hostname.includes('fonts.')) {
+    e.respondWith(
+      caches.match(e.request).then(cached => {
+        const fetchPromise = fetch(e.request).then(res => {
+          const clone = res.clone();
+          caches.open(CACHE).then(c => c.put(e.request, clone));
+          return res;
+        }).catch(() => {});
+        return cached || fetchPromise;
+      })
     );
   }
 });
