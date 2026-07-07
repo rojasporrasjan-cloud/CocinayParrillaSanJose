@@ -308,7 +308,7 @@ body {
 
 .search-clear {
   position: absolute;
-  right: 0.9rem;
+  right: 3.2rem;
   background: none;
   border: none;
   color: var(--text-dim);

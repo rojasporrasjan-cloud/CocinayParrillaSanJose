@@ -869,22 +869,40 @@ function iniciarTutorial() {
     prevBtnText: '← Anterior',
     doneBtnText: '¡Entendido!',
     progressText: 'Paso {{current}} de {{total}}',
-    allowClose: true,
+    allowClose: false,
+    onPopoverRender: (popover) => {
+      const desc = popover.description;
+      if (desc && !desc.querySelector('.dont-show-again')) {
+        const div = document.createElement('div');
+        div.className = 'dont-show-again';
+        div.style.marginTop = '12px';
+        div.style.borderTop = '1px solid rgba(255,255,255,0.1)';
+        div.style.paddingTop = '8px';
+        div.style.display = 'flex';
+        div.style.alignItems = 'center';
+        div.innerHTML = `
+          <label style="display:flex; align-items:center; gap:6px; font-size:11px; color:var(--text-muted); cursor:pointer; width:100%;">
+            <input type="checkbox" id="driver-dont-show" ${localStorage.getItem('sanjose_tutorial_seen') ? 'checked' : ''} style="cursor:pointer; accent-color:var(--yellow); width:14px; height:14px;">
+            No volver a mostrar el tutorial
+          </label>
+        `;
+        desc.appendChild(div);
+        
+        div.querySelector('input').addEventListener('change', (e) => {
+          if (e.target.checked) {
+            localStorage.setItem('sanjose_tutorial_seen', '1');
+          } else {
+            localStorage.removeItem('sanjose_tutorial_seen');
+          }
+        });
+      }
+    },
     steps: [
       {
         element: '.cat-nav',
         popover: {
           title: 'Navega el Menú',
           description: 'Desliza y selecciona una categoría para encontrar rápido lo que buscas.',
-          side: 'bottom',
-          align: 'start'
-        }
-      },
-      {
-        element: '.search-wrap',
-        popover: {
-          title: 'Busca tu Antojo',
-          description: 'También puedes buscar platos por su nombre directamente aquí.',
           side: 'bottom',
           align: 'start'
         }
@@ -903,7 +921,7 @@ function iniciarTutorial() {
         popover: {
           title: 'Tu Pedido',
           description: 'Aquí verás todo lo que has agregado y el total de tu cuenta.',
-          side: 'left',
+          side: 'top',
           align: 'center'
         }
       },
@@ -921,7 +939,6 @@ function iniciarTutorial() {
   });
 
   tour.drive();
-  localStorage.setItem('sanjose_tutorial_seen', '1');
 }
 
 // Auto-start tutorial on first visit
