@@ -685,16 +685,33 @@
   <!-- Gallery config — add photos in gallery/gallery.js -->
   <script src="gallery/gallery.js"></script>
   <!-- App Logic -->
-  <script src="app.js?v=1.4"></script>
+  <script src="app.js?v=1.5"></script>
   <script>
+    // Forzar reseteo del tutorial para que vuelva a salir al actualizar
+    if (!localStorage.getItem('sanjose_tour_reset_v10')) {
+      localStorage.removeItem('sanjose_tutorial_seen');
+      localStorage.setItem('sanjose_tour_reset_v10', '1');
+    }
+
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js').catch(() => {});
+        navigator.serviceWorker.register('sw.js?v=10').then(reg => {
+          // Fuerza al navegador a buscar el sw.js en el servidor inmediatamente
+          reg.update();
+        });
+      });
+      
+      // Cuando el nuevo Service Worker tome el control, recargamos la página forzosamente
+      let refreshing = false;
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (!refreshing) {
+          window.location.reload();
+          refreshing = true;
+        }
       });
     }
   </script>
 
 </body>
-</html>
 
 

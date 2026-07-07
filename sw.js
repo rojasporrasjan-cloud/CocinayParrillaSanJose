@@ -1,4 +1,4 @@
-const CACHE = 'sanjose-menu-v9';
+const CACHE = 'sanjose-menu-v10';
 
 const ASSETS = [
   '/',
