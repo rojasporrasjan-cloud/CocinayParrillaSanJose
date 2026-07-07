@@ -1,4 +1,4 @@
-const CACHE = 'sanjose-menu-v10';
+const CACHE = 'sanjose-menu-v11';
 
 const ASSETS = [
   '/',
@@ -9,13 +9,14 @@ const ASSETS = [
   '/manifest.json',
   '/icon-192.png',
   '/icon-512.png',
-  '/gallery/gallery.js',
-  'https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;700&family=Montserrat:wght@900&display=swap'
+  '/gallery/gallery.js'
 ];
 
 self.addEventListener('install', e => {
   e.waitUntil(
-    caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting())
+    caches.open(CACHE).then(c => {
+      return c.addAll(ASSETS).catch(err => console.warn('Falló addAll', err));
+    }).then(() => self.skipWaiting())
   );
 });
 
